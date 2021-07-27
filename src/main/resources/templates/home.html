@@ -12,7 +12,7 @@
         <div class="container">
             <div id="logoutDiv">
                 <form action="#" th:action="@{/logout}" method="POST">
-                    <button type="submit" class="btn btn-secondary float-right">Logout</button>
+                    <button type="submit" class="btn btn-secondary float-right" id="logoutButton">Logout</button>
                 </form>
             </div>
             <div id="contentDiv" style="clear: right;">
@@ -67,7 +67,7 @@
                         </div>
                     </div>
                     <div class="tab-pane fade" id="nav-notes" role="tabpanel" aria-labelledby="nav-notes-tab">
-                        <button style="margin: 0.25em;" type="button" class="btn btn-info float-right" onclick="showNoteModal()">
+                        <button style="margin: 0.25em;" type="button" class="btn btn-info float-right" id="openNoteModalButton" onclick="showNoteModal()">
                             + Add a New Note
                         </button>
 
@@ -86,7 +86,7 @@
                                             <button type="button" class="btn btn-success" th:onclick="showNoteModal([[${note.noteid}]], [[${note.notetitle}]], [[${note.notedescription}]])">Edit</button>
                                             <form style="display: inline;" th:object="${noteForm}" method="POST" th:action="@{'/home/deleteNote'}">
                                                 <input type="hidden" name="noteid" th:value="${note.noteid}">
-                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                                <button type="submit" class="btn btn-danger" id="deleteNoteButton">Delete</button>
                                             </form>
                                         </td>
                                         <th scope="row" th:text="${note.notetitle}">Example Note Title</th>
