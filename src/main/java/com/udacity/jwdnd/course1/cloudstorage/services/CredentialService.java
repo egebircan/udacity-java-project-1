@@ -48,7 +48,7 @@ public class CredentialService {
     public List<CredentialForm> getCredentials(String userName) {
         User user = userMapper.getUser(userName);
         List<CredentialForm> credentials = credentialMapper.getCredentialsByUserId(user.getUserId());
-        credentials.forEach(c -> c.setPassword(encryptionService.decryptValue(c.getPassword(), c.getKey())));
+        credentials.forEach(c -> c.setRawPassword(encryptionService.decryptValue(c.getPassword(), c.getKey())));
         return credentials;
     }
 }

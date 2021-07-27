@@ -2,10 +2,13 @@ package com.udacity.jwdnd.course1.cloudstorage;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 
@@ -57,7 +60,7 @@ class CloudStorageApplicationTests {
 
 	@Test
 	public void shouldSignUpThenLoginThenLogout() {
-		signUpAndLogin();
+		signUpAndLogin("signloginlogout", "signloginlogout");
 
 		Assertions.assertEquals("Home", driver.getTitle());
 
@@ -71,41 +74,44 @@ class CloudStorageApplicationTests {
 
 	}
 
-	// page load issue
 	@Test
 	public void shouldCreateNote() {
-		signUpAndLogin();
-		createNote();
+		signUpAndLogin("createnote", "createnote");
+		createNote("demoNoteTitle", "description");
 		Assertions.assertTrue(driver.getPageSource().contains("demoNoteTitle"));
 	}
 
-	// page load issue
 	@Test
 	public void shouldDeleteNote()  {
-		signUpAndLogin();
-		createNote();
+		signUpAndLogin("deletenote", "deletenote");
+		createNote("demoNoteTitle", "description");
 
 		HomePage homePage = new HomePage(driver);
-		pressKey(Keys.TAB);
-		pressKey(Keys.TAB);
-		pressKey(Keys.TAB);
-		pressKey(Keys.TAB);
-		pressKey(Keys.ENTER);
+		homePage.deleteNote();
+
+		this.goToHomeFromSuccess();
 
 		homePage.navigateToNotes();
 
 		Assertions.assertFalse(driver.getPageSource().contains("demoNoteTitle"));
 	}
 
-	void createNote() {
+	void createNote(String title, String description) {
+		new WebDriverWait(driver, 3).until(ExpectedConditions.elementToBeClickable(By.cssSelector("#nav-notes-tab")));
 		HomePage homePage = new HomePage(driver);
-		homePage.createNote("demoNoteTitle", "description");
+		homePage.createNote(title, description);
 
-		pressKey(Keys.TAB);
-		pressKey(Keys.TAB);
-		pressKey(Keys.ENTER);
+		this.goToHomeFromSuccess();
 
 		homePage.navigateToNotes();
+	}
+
+	void goToHomeFromSuccess() {
+		new WebDriverWait(driver, 3).until(ExpectedConditions.elementToBeClickable(By.cssSelector("#goHome")));
+		SuccessPage successPage = new SuccessPage(driver);
+		successPage.goHome();
+
+		new WebDriverWait(driver, 3).until(ExpectedConditions.elementToBeClickable(By.cssSelector("#logoutButton")));
 	}
 
 	void pressKey(Keys key) {
@@ -113,17 +119,16 @@ class CloudStorageApplicationTests {
 		builder.sendKeys(key).build().perform();
 		builder.release().perform();
 	}
-	void signUpAndLogin() {
+	void signUpAndLogin(String username, String password) {
 		String firstName = "firstName";
 		String lastName = "lastName";
-		String username = "username";
-		String password = "password";
 
 		driver.get(baseURL + "/signup");
 		SignUpPage signUpPage = new SignUpPage(driver);
 		signUpPage.signUp(firstName, lastName, username, password);
 
-		driver.get(baseURL + "/login");
+		new WebDriverWait(driver, 3).until(ExpectedConditions.elementToBeClickable(By.cssSelector("#loginButton")));
+
 		LoginPage loginPage = new LoginPage(driver);
 		loginPage.login(username, password);
 	}

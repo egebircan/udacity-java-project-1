@@ -8,6 +8,7 @@ public class CredentialForm {
     Integer userid;
     String userName;
     String key;
+    String rawPassword;
 
     public CredentialForm(Integer credentialid, String url, String username, String password, Integer userid, String userName) {
         this.credentialid = credentialid;
@@ -19,6 +20,14 @@ public class CredentialForm {
     }
 
     public CredentialForm() {}
+
+    public String getRawPassword() {
+        return rawPassword;
+    }
+
+    public void setRawPassword(String rawPassword) {
+        this.rawPassword = rawPassword;
+    }
 
     public String getKey() {
         return key;

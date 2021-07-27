@@ -64,13 +64,13 @@ public class HomeController {
             noteService.updateNote(noteForm);
         }
 
-        return "redirect:" + "/home";
+        return "redirect:" + "/home/success";
     }
 
     @PostMapping("/deleteNote")
     public String deleteNote(NoteForm noteForm, Model model) {
         noteService.deleteNote(noteForm);
-        return "redirect:" + "/home";
+        return "redirect:" + "/home/success";
     }
 
 
@@ -84,13 +84,13 @@ public class HomeController {
             credentialService.updateCredential(credentialForm);
         }
 
-        return "redirect:" + "/home";
+        return "redirect:" + "/home/success";
     }
 
     @PostMapping("/deleteCredential")
     public String deleteCredential(CredentialForm credentialForm, Model model) {
         credentialService.deleteCredential(credentialForm);
-        return "redirect:" + "/home";
+        return "redirect:" + "/home/success";
     }
 
 
@@ -105,7 +105,7 @@ public class HomeController {
             storageService.save(fileForm.getFile());
         } catch (Exception ignored) { }
 
-        return "redirect:" + "/home";
+        return "redirect:" + "/home/success";
     }
 
     @GetMapping("/files")
@@ -131,6 +131,11 @@ public class HomeController {
     @PostMapping("/deleteFile")
     public String deleteFile(FileInfo fileInfo, Model model) {
         storageService.deleteFile(fileInfo);
-        return "redirect:" + "/home";
+        return "redirect:" + "/home/success";
+    }
+
+    @GetMapping("/success")
+    public String successPage() {
+        return "success";
     }
 }
