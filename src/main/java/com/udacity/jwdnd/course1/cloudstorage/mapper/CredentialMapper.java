@@ -7,11 +7,11 @@ import java.util.List;
 
 @Mapper
 public interface CredentialMapper {
-    @Insert("INSERT INTO CREDENTIALS (url, username, password, userid) VALUES(#{url}, #{username}, #{password}, #{userid})")
+    @Insert("INSERT INTO CREDENTIALS (url, username, password, userid, key) VALUES(#{url}, #{username}, #{password}, #{userid}, #{key})")
     @Options(useGeneratedKeys = true, keyProperty = "credentialid")
     void insert(CredentialForm credentialForm);
 
-    @Update("UPDATE CREDENTIALS SET url=#{url}, username=#{username}, password=#{password} WHERE credentialid=#{credentialid}")
+    @Update("UPDATE CREDENTIALS SET url=#{url}, username=#{username}, password=#{password}, key=#{key} WHERE credentialid=#{credentialid}")
     void updateCredentialById(CredentialForm credentialForm);
 
     @Select("SELECT * FROM CREDENTIALS WHERE userid=#{userId}")

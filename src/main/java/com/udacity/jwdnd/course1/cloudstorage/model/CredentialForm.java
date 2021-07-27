@@ -7,6 +7,7 @@ public class CredentialForm {
     String password;
     Integer userid;
     String userName;
+    String key;
 
     public CredentialForm(Integer credentialid, String url, String username, String password, Integer userid, String userName) {
         this.credentialid = credentialid;
@@ -18,6 +19,14 @@ public class CredentialForm {
     }
 
     public CredentialForm() {}
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
 
     public String getUserName() {
         return userName;
