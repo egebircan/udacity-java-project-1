@@ -45,7 +45,7 @@ public class FileController {
         try {
             this.storageService.save(fileForm.getFile());
         } catch (Exception e) {
-            redirAttrs.addFlashAttribute("uploadError", "File exceeds maximum size limit of 5MB.");
+            redirAttrs.addFlashAttribute("uploadError", "File exceeds maximum size limit of 10MB.");
             return "redirect:" + "/home";
         }
 

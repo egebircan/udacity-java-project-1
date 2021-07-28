@@ -30,8 +30,8 @@ public class StorageService {
         double fileSizeInMB = file.getSize() *  0.00000095367432;
 
         try {
-            if (fileSizeInMB > 5) {
-                throw new Exception("File exceeds maximum size limit of 5MB");
+            if (fileSizeInMB > 10) {
+                throw new Exception("File exceeds maximum size limit of 10MB");
             }
 
             Files.copy(file.getInputStream(), this.root.resolve(file.getOriginalFilename()));

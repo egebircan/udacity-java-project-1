@@ -19,6 +19,9 @@ public class NoteController {
 
     @PostMapping("/createNote")
     public String createNote(Authentication authentication, NoteForm noteForm, Model model) {
+        if (noteForm.getNotedescription().length() >= 1000)
+            return "note-size-error";
+
         noteForm.setUserName(authentication.getName());
 
         if (noteForm.getNoteid() == null) {
