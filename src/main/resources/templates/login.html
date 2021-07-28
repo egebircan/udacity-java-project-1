@@ -18,6 +18,9 @@
                 <div id="logout-msg" th:if="${param.logout}" class="alert alert-dark">
                     You have been logged out
                 </div>
+                <div id="signup-success" th:if="${signupSuccess}" class="alert alert-dark">
+                    You're successfully registered. Log in to continue.
+                </div>
                 <div class="form-group">
                     <label for="loginUsername">Username</label>
                     <input type="input" class="form-control" name="username" id="loginUsername" placeholder="Enter Username" maxlength="20" required>
