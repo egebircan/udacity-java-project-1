@@ -14,7 +14,6 @@ public class HomeController {
     NoteService noteService;
     CredentialService credentialService;
     StorageService storageService;
-    Boolean uploadError = false;
     FileController fileController;
 
     public HomeController(NoteService noteService, CredentialService credentialService, StorageService storageService, FileController fileController) {
@@ -29,12 +28,6 @@ public class HomeController {
         model.addAttribute("files", this.fileController.getListFiles());
         model.addAttribute("notes", this.noteService.getNotes(authentication.getName()));
         model.addAttribute("credentials", this.credentialService.getCredentials(authentication.getName()));
-
-        if (this.uploadError) {
-            model.addAttribute("uploadError", true);
-            this.uploadError = false;
-        }
-
         return "home";
     }
 

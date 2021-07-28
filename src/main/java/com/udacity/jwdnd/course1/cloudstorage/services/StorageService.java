@@ -27,7 +27,13 @@ public class StorageService {
     }
 
     public void save(MultipartFile file) {
+        double fileSizeInMB = file.getSize() *  0.00000095367432;
+
         try {
+            if (fileSizeInMB > 5) {
+                throw new Exception("File exceeds maximum size limit of 5MB");
+            }
+
             Files.copy(file.getInputStream(), this.root.resolve(file.getOriginalFilename()));
         } catch (Exception e) {
             throw new RuntimeException("Could not store the file. Error: " + e.getMessage());

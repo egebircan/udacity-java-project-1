@@ -40,7 +40,7 @@
                                 </div>
                             </div>
                             <div id="error-msg" th:if="${uploadError}" class="alert alert-danger">
-                                <span>A file with the same name already exists</span>
+                                <span th:text="${uploadError}"></span>
                             </div>
                         </form>
                         <div class="table-responsive">

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -31,14 +32,22 @@ public class FileController {
     }
 
     @PostMapping("/upload")
-    public String uploadFile(@ModelAttribute FileForm fileForm, Model model) {
+    public String uploadFile(@ModelAttribute FileForm fileForm, Model model, RedirectAttributes redirAttrs) {
+        if (fileForm.getFile().getOriginalFilename().isEmpty()) {
+            return "redirect:" + "/home";
+        }
+
         if (this.storageService.load(fileForm.getFile().getOriginalFilename()) != null) {
+            redirAttrs.addFlashAttribute("uploadError", "A file with the same name already exists");
             return "redirect:" + "/home";
         }
 
         try {
             this.storageService.save(fileForm.getFile());
-        } catch (Exception ignored) { }
+        } catch (Exception e) {
+            redirAttrs.addFlashAttribute("uploadError", "File exceeds maximum size limit of 5MB.");
+            return "redirect:" + "/home";
+        }
 
         return "redirect:" + "/home/success";
     }
