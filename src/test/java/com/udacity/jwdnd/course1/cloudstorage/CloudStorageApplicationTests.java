@@ -82,18 +82,48 @@ class CloudStorageApplicationTests {
 	}
 
 	@Test
+	public void shouldEditNote() {
+		signUpAndLogin("editnote", "editnote");
+		createNote("demoNoteTitle", "description");
+		editNote("editNoteTitle", "description");
+
+		Assertions.assertFalse(driver.getPageSource().contains("demoNoteTitle"));
+		Assertions.assertTrue(driver.getPageSource().contains("editNoteTitle"));
+	}
+
+	@Test
 	public void shouldDeleteNote()  {
 		signUpAndLogin("deletenote", "deletenote");
 		createNote("demoNoteTitle", "description");
-
-		HomePage homePage = new HomePage(driver);
-		homePage.deleteNote();
-
-		this.goToHomeFromSuccess();
-
-		homePage.navigateToNotes();
+		deleteNote();
 
 		Assertions.assertFalse(driver.getPageSource().contains("demoNoteTitle"));
+	}
+
+	@Test
+	public void shouldCreateCredential() {
+		signUpAndLogin("createCredential", "createCredential");
+		createCredential("demoCredentialUrl", "username", "password");
+		Assertions.assertTrue(driver.getPageSource().contains("demoCredentialUrl"));
+	}
+
+	@Test
+	public void shouldEditCredential() {
+		signUpAndLogin("editCredential", "editCredential");
+		createCredential("demoCredentialUrl", "username", "password");
+		editCredential("editCredentialUrl", "username", "password");
+
+		Assertions.assertFalse(driver.getPageSource().contains("demoCredentialUrl"));
+		Assertions.assertTrue(driver.getPageSource().contains("editCredentialUrl"));
+	}
+
+	@Test
+	public void shouldDeleteCredential()  {
+		signUpAndLogin("deleteCredential", "deleteCredential");
+		createCredential("demoCredentialUrl", "username", "password");
+		deleteCredential();
+
+		Assertions.assertFalse(driver.getPageSource().contains("demoCredentialUrl"));
 	}
 
 	void createNote(String title, String description) {
@@ -101,12 +131,58 @@ class CloudStorageApplicationTests {
 		HomePage homePage = new HomePage(driver);
 		homePage.createNote(title, description);
 
-		this.goToHomeFromSuccess();
+		this.goToHomeFromSuccessPage();
 
 		homePage.navigateToNotes();
 	}
 
-	void goToHomeFromSuccess() {
+	void editNote(String title, String description) {
+		HomePage homePage = new HomePage(driver);
+		homePage.editNote(title, description);
+
+		this.goToHomeFromSuccessPage();
+
+		homePage.navigateToNotes();
+	}
+
+	void deleteNote() {
+		HomePage homePage = new HomePage(driver);
+		homePage.deleteNote();
+
+		this.goToHomeFromSuccessPage();
+
+		homePage.navigateToNotes();
+	}
+
+	void createCredential(String url, String username, String password) {
+		new WebDriverWait(driver, 3).until(ExpectedConditions.elementToBeClickable(By.cssSelector("#nav-credentials-tab")));
+		HomePage homePage = new HomePage(driver);
+		homePage.createCredential(url, username, password);
+
+		this.goToHomeFromSuccessPage();
+
+		homePage.navigateToCredentials();
+	}
+
+	void editCredential(String url, String username, String password) {
+		HomePage homePage = new HomePage(driver);
+		homePage.editCredential(url, username, password);
+
+		this.goToHomeFromSuccessPage();
+
+		homePage.navigateToCredentials();
+	}
+
+	void deleteCredential() {
+		HomePage homePage = new HomePage(driver);
+		homePage.deleteCredential();
+
+		this.goToHomeFromSuccessPage();
+
+		homePage.navigateToCredentials();
+	}
+
+	void goToHomeFromSuccessPage() {
 		new WebDriverWait(driver, 3).until(ExpectedConditions.elementToBeClickable(By.cssSelector("#goHome")));
 		SuccessPage successPage = new SuccessPage(driver);
 		successPage.goHome();
@@ -114,11 +190,6 @@ class CloudStorageApplicationTests {
 		new WebDriverWait(driver, 3).until(ExpectedConditions.elementToBeClickable(By.cssSelector("#logoutButton")));
 	}
 
-	void pressKey(Keys key) {
-		Actions builder = new Actions(driver);
-		builder.sendKeys(key).build().perform();
-		builder.release().perform();
-	}
 	void signUpAndLogin(String username, String password) {
 		String firstName = "firstName";
 		String lastName = "lastName";
@@ -131,5 +202,11 @@ class CloudStorageApplicationTests {
 
 		LoginPage loginPage = new LoginPage(driver);
 		loginPage.login(username, password);
+	}
+
+	void pressKey(Keys key) {
+		Actions builder = new Actions(driver);
+		builder.sendKeys(key).build().perform();
+		builder.release().perform();
 	}
 }
